@@ -1,6 +1,7 @@
 /**
- *  Hello, it's mE!
+ *  Nest Thermostat SmartApp
  */
+ 
 definition(
     name: "Nest Presence",
     namespace: "autom8",
