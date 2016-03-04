@@ -13,7 +13,7 @@ definition(
 )
 
 preferences {
-	page("Home", "Nest SmartApp") {
+	page(name: "Home", title: "Nest SmartApp", uninstall: true) {
         section("Choose Nest themostat... "){
             input "myThermostat", "capability.Thermostat", multiple: true, title: "Thermostat"
         }
