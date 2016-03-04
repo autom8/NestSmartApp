@@ -3,12 +3,12 @@
  */
 definition(
     name: "Nest Presence",
-    namespace: "mE",
-    author: "mE",
+    namespace: "autom8",
+    author: "autom8",
     description: "Set your Nest thermostat to away or off when you leave home.",
     category: "Green Living",
-    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch@2x.png"
+    iconUrl: "https://raw.githubusercontent.com/autom8/NestSmartApp/master/nest_icon.png",
+    iconX2Url: "https://raw.githubusercontent.com/autom8/NestSmartApp/master/nest_icon.2x.png"
 )
 
 preferences {
@@ -44,7 +44,6 @@ def initialize() {
 
 def modeChangeHandler(evt) {
 	log.debug "modeChangeHandler called: $evt.value"
-	myThermostat?.away()
 	if (myAwayMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Away"
 		myThermostat?.heat()
