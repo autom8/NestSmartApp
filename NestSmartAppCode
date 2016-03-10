@@ -26,6 +26,9 @@ preferences {
         section("Switch Nest to off when mode is...") {
             input "myOffMode", "mode", multiple: true, required: false
         }
+		section("Send push notification when mode changes?") {
+			input "sendPush", bool, required: false
+		}
     }
 }
 
@@ -49,16 +52,25 @@ def modeChangeHandler(evt) {
 	log.debug "modeChangeHandler called: $evt.value"
 	if (myAwayMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Away"
+		if (sendPush) {
+			sendPush("Heating mode set to Away")
+		}
 		myThermostat?.heat()
 		myThermostat?.away()
 	}
     else if (myHomeMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Home"
+		if (sendPush) {
+			sendPush("Heating mode set to Home")
+		}
 		myThermostat?.heat()
 		myThermostat?.present()
 	}
     else if (myOffMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Off"
+		if (sendPush) {
+			sendPush("Heating mode set to Off")
+		}
 		myThermostat?.off()
 	}
 }
