@@ -13,7 +13,7 @@ definition(
 )
 
 preferences {
-	page(name: "Home", title: "Nest SmartApp", uninstall: true) {
+	page(name: "Home", title: "Nest SmartApp", install: true, uninstall: true) {
         section("Choose Nest themostat... "){
             input "myThermostat", "capability.Thermostat", multiple: true, title: "Thermostat"
         }
@@ -27,14 +27,13 @@ preferences {
             input "myOffMode", "mode", multiple: true, required: false
         }
 		section("Send push notification when mode changes?") {
-			input "sendPush", bool, required: false
+			input "sendPush", "bool", required: true, title: "On = Yes, Off = No", defaultValue: true
 		}
     }
 }
 
 def installed() {
     log.debug "Installed with settings: ${settings}"
-	log.
     initialize()
 }
 
@@ -52,25 +51,25 @@ def modeChangeHandler(evt) {
 	log.debug "modeChangeHandler called: $evt.value"
 	if (myAwayMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Away"
-		if (sendPush) {
-			sendPush("Heating mode set to Away")
-		}
+		sendMessage("Away")
 		myThermostat?.heat()
 		myThermostat?.away()
 	}
     else if (myHomeMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Home"
-		if (sendPush) {
-			sendPush("Heating mode set to Home")
-		}
+		sendMessage("Home")
 		myThermostat?.heat()
 		myThermostat?.present()
 	}
     else if (myOffMode.contains(evt.value)) {
         log.debug "Set Nest Thermostat to Off"
-		if (sendPush) {
-			sendPush("Heating mode set to Off")
-		}
+		sendMessage("Off")
 		myThermostat?.off()
+	}
+}
+
+private sendMessage(msg) {
+	if (sendPush) {
+		sendPush("Heating mode set to ${msg}")
 	}
 }
